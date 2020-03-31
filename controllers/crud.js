@@ -1,16 +1,19 @@
 module.exports = {
     create: (model) => async (req, res) => {
-        try {
+        console.log(req.body)
+       try {
             const doc = await model.create(req.body)
+            console.log(doc)
             res.status(200).json({ data: doc })
-        } catch{
-            res.status(500).json({ message: "ERROR" })
+        } catch(err){
+            console.log("error", err)
+            res.status(500).json({ message: err })
         }
     },
 
     readOne: (model) => async (req, res) => {
         try {
-            const doc = await model.findById(req.params.id)
+            const doc = await model.findById(req.params.id).exec()
             res.status(200).json({ data: doc })
         } catch{
             res.status(500).json({ message: "ERROR" })
@@ -20,7 +23,7 @@ module.exports = {
 
     readMany: (model) => async (req, res) => {
         try {
-            const doc = await model.find({ user_id: req.params.id })
+            const doc = await model.find({ user_id: req.params.id }).exec()
             res.status(200).json({ data: doc })
         } catch{
             res.status(500).json({ message: "ERROR" })
@@ -30,7 +33,7 @@ module.exports = {
 
     updateOne: (model) => async (req, res) => {
         try {
-            const doc = await model.findOneAndUpdate({ id: req.headers.id }, req.body, { new: true })
+            const doc = await model.findOneAndUpdate({ id: req.headers.id }, req.body, { new: true }).exec()
             res.status(200).json({ data: doc })
         } catch{
             res.status(500).json({ message: "ERROR" })
@@ -40,7 +43,7 @@ module.exports = {
 
     deleteOne: (model) => async (req, res) => {
         try {
-            const doc = await model.deleteOne({ id: req.headers.id })
+            const doc = await model.deleteOne({ id: req.headers.id }).exec()
             res.status(200).json({ data: doc })
         } catch{
             res.status(500).json({ message: "ERROR" })
@@ -50,7 +53,7 @@ module.exports = {
 
     deleteMany: (model) => async (req, res) => {
         try {
-            const doc = await model.deleteMany({ user_id: req.headers.id })
+            const doc = await model.deleteMany({ user_id: req.headers.id }).exec()
             res.status(200).json({ data: doc })
         } catch{
             res.status(500).json({ message: "ERROR" })

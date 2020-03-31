@@ -1,5 +1,6 @@
 var express = require('express')
 var router = express.Router()
+var mongoose = require('mongoose')
 var controller = require('../controllers/crud.js')
 var jwt = require("jsonwebtoken")
 //user
@@ -11,24 +12,31 @@ var todoModel = require("../models/todo.js")
 router.get('/', async (req, res) => {
     console.log(req.headers.authorization)
     var decoded = jwt.verify(req.headers.authorization, process.env.JWT_TOKEN);
-    console.log(decoded.user.name)
-    var User = await userModel.find({name: decoded.user.name}).lean().exec()
-    console.log(User)
-    var Todos = await todoModel.find({user_id: User._id}).lean().exec()
-    res.status(200).json({User, Todos})
+    console.log(decoded)
+
+    var user = await userModel.findOne({_id: decoded.id}).lean().exec()
+    console.log(user)
+
+    var todos = await todoModel.find({user_id: user._id}).lean().exec()
+    console.log(todos)
+
+    res.status(200).json({user, todos})
 })
 
 //create a user
 router.post('/create', controller.create(userModel))
 
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
     try {
-        let user = req.body
-        var token = jwt.sign({ user }, process.env.JWT_TOKEN);
+        let name = req.body
+        console.log(name,"name")
+        var user = await userModel.findOne({name: name.name}).lean().exec()
+        console.log(user,"USER")
+        var token = jwt.sign({ id: user._id }, process.env.JWT_TOKEN);
         console.log(token)
         res.status(200).json({ data: token })
-    } catch{
-        res.status(404).json({message: "ERROR"})
+    } catch(err){
+        res.status(404).json({message: 'hello'})
     }
 })
 
