@@ -46,5 +46,15 @@ module.exports = {
             res.status(500).json({ message: "ERROR" })
         }
 
+    },
+
+    deleteMany: (model) => async (req, res) => {
+        try {
+            const doc = await model.deleteMany({ user_id: req.headers.id })
+            res.status(200).json({ data: doc })
+        } catch{
+            res.status(500).json({ message: "ERROR" })
+        }
+
     }
 }
