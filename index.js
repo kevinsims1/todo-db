@@ -23,17 +23,15 @@ server.use("/todo",todoRouter)
 
 server.get('/', (req, res) => res.send('Hello World!'))
 
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017,localhost:27018,localhost:27019/todo?replicaSet=rs"
-
 
 async function start(){
-    await mongoose.connect(MONGODB_URI, {
+    await mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017,localhost:27018,localhost:27019/todo?replicaSet=rs", {
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
 
-    server.listen("https://todo-db-kevin.herokuapp.com"||process.env.PORT, function(){
-        console.log(`listening`);
+    server.listen(process.env.PORT, function(){
+        console.log(`listening on *:${process.env.PORT}`);
     })
 }
 start()
