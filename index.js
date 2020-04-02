@@ -25,7 +25,8 @@ server.get('/', (req, res) => res.send('Hello World!'))
 
 
 async function start(){
-    await mongoose.connect("mongodb://localhost:27017,localhost:27018,localhost:27019/todo?replicaSet=rs", {
+    var MONGODB_URI = process.env.MONGODB_URL || "mongodb://localhost:27017,localhost:27018,localhost:27019/todo?replicaSet=rs"
+    await mongoose.connect(MONGODB_URI, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
