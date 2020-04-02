@@ -32,7 +32,7 @@ async function start(){
         useUnifiedTopology: true
     })
 
-    server.listen("https://todo-db-kevin.herokuapp.com/"||process.env.PORT, function(){
+    server.listen("https://todo-db-kevin.herokuapp.com"||process.env.PORT, function(){
         console.log(`listening`);
     })
 }
