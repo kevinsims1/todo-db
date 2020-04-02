@@ -13,7 +13,7 @@ server.use(
     })
 );
 
-server.use(cors({origin: '*'}))
+server.use(cors({ origin: '*' }));
 
 server.use(bp.json());
 
