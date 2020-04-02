@@ -32,8 +32,8 @@ async function start(){
         useUnifiedTopology: true
     })
 
-    server.listen(process.env.PORT, function(){
-        console.log(`listening on *:${process.env.PORT}`);
+    server.listen("https://todo-db-kevin.herokuapp.com/"||process.env.PORT, function(){
+        console.log(`listening`);
     })
 }
 start()
