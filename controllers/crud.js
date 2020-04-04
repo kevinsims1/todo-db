@@ -43,7 +43,7 @@ module.exports = {
 
     deleteOne: (model) => async (req, res) => {
         try {
-            const doc = await model.deleteOne({ id: req.headers.id }).exec()
+            const doc = await model.deleteOne({ id: req.body }).exec()
             res.status(200).json({ data: doc })
         } catch{
             res.status(500).json({ message: "ERROR" })
