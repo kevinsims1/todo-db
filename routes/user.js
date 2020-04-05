@@ -10,33 +10,36 @@ var todoModel = require("../models/todo.js")
 
 //get user by token
 router.get('/', async (req, res) => {
-    console.log(req.headers.authorization)
+
     var decoded = jwt.verify(req.headers.authorization, process.env.JWT_TOKEN);
-    console.log(decoded)
 
-    var user = await userModel.findOne({id: decoded.id}).lean().exec()
-    console.log(user)
+    var user = await userModel.findOne({ _id: decoded.id }).lean().exec()
 
-    var todos = await todoModel.find({user_id: user.id}).lean().exec()
-    console.log(todos)
+    var todos = await todoModel.find({ user_id: user._id }).lean().exec()
 
     res.status(200).json({user, todos})
+
 })
 
 //create a user
 router.post('/create', controller.create(userModel))
 
+//login a user
 router.post('/login', async (req, res) => {
     try {
-        let name = req.body
-        console.log(name,"name")
-        var user = await userModel.findOne({name: name.name}).lean().exec()
-        console.log(user,"USER")
-        var token = jwt.sign({ id: user.id }, process.env.JWT_TOKEN);
-        console.log(token)
+
+        let name = req.body.name
+
+        var user = await userModel.findOne({ name }).lean().exec()
+
+        var token = jwt.sign({ id: user._id }, process.env.JWT_TOKEN);
+        
         res.status(200).json({ data: token })
+
     } catch(err){
-        res.status(404).json({message: 'hello'})
+
+        res.status(404).json({message: 'login error'})
+
     }
 })
 
