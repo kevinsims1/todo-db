@@ -13,6 +13,10 @@ router.post('/create', controller.create(todo))
 //delete a todo
 router.post('/delete', controller.deleteOne(todo))
 
+//update a todo
+router.post('/update', controller.updateOne(todo))
+
+
 //get users todos by id
 router.get('/user/:id', controller.readMany(todo))
 
